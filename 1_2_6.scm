@@ -123,3 +123,40 @@
       3
       (+ n 2)))
 
+
+;; Exercise 1.24.  Modify the timed-prime-test procedure of exercise 1.22 to use
+;; fast-prime? (the Fermat method), and test each of the 12 primes you found in that exercise.
+;; Since the Fermat test has (log n) growth, how would you expect the time to test primes near
+;; 1,000,000 to compare with the time needed to test primes near 1000? Do your data bear this
+;; out? Can you explain any discrepancy you find?
+
+(define (fast-search-for-primes start count)
+  (if (= count 0)
+      #t
+      (if (fast-prime? start 3)
+          (begin
+            (display start)
+            (newline)
+            (search-for-primes (+ start 1) (- count 1)))
+          (search-for-primes (+ start 1) count))))
+
+(define (fast-timed-search-for-primes start count)
+  (time (fast-search-for-primes start count)))
+
+;; 25> (fast-timed-search-for-primes 1000000 4)
+;; 1000003
+;; 1000033
+;; 1000037
+;; 1000039
+;; 0.009s CPU time, 16 mutations, 0/86 GCs (major/minor)
+;; #t
+;; #;26> (fast-timed-search-for-primes 1000000000 4)
+;; 1000000007
+;; 1000000009
+;; 1000000021
+;; 1000000033
+;; 0.07s CPU time, 0.001s GC time (major), 16 mutations, 3/2482 GCs (major/minor)
+;; #t
+
+;; seems logaritmic to me!
+
