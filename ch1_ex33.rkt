@@ -33,9 +33,11 @@
 
 (define (filtered-accumulate passes-filter? combiner null-value term a next b)
   (define (iter a result)
-    (if (and (> a b) (passes-filter? a))
+    (if (> a b)
         result
-        (iter (next a) (combiner result (term a)))))
+        (if (passes-filter? a)
+            (iter (next a) (combiner result (term a)))
+            (iter null-value (combiner result (term a))))))
   (iter a null-value))
 
 (define (inc i) (+ i 1))
