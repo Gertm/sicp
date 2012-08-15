@@ -52,7 +52,7 @@
 
 (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.5)
 
-
+(define (a) (display "got a!") (newline))
 
 ;; Exercise 1.36.  Modify fixed-point so that it prints the sequence of
 ;; approximations it generates, using the newline and display primitives shown
@@ -105,4 +105,16 @@
 (cont-frac (lambda (i) 1.0)
            (lambda (i) 1.0)
            5)
+
+;; we need to turn the formula 'inside-out' and start from the case for which we have a solution.
+;; Nx and Dx, from there on it can be converted to an iterative solution.
+ (define (iter-cont-frac n d k) 
+   (define (iter result i) 
+     (if (= i 0) 
+         result 
+         (iter (/ (n i)
+                  (+ (d i) result))
+               (- i 1)))) 
+   (iter 0 k)) 
+
 
