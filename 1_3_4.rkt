@@ -62,7 +62,87 @@
 (define (average-damp f)
   (lambda (x) (average x (f x))))
 
+(define (square x) (* x x))
+
 (define (sqrt x)
   (fixed-point (average-damp (lambda (y) (/ x y)))
                1.0))
 
+(define (deriv g)
+  (lambda (x)
+    (/ (- (g (+ x dx)) (g x))
+       dx)))
+
+(define dx 0.00001)
+
+(define (newton-transform g)
+  (lambda (x)
+    (- x (/ (g x) ((deriv g) x)))))
+
+(define (newtons-method g guess)
+  (fixed-point (newton-transform g) guess))
+
+(define (sqrt-nm x)
+  (newtons-method (lambda (y) (- (square y) x))
+                  1.0))
+
+;; ex1.40
+(define (cubic a b c)
+  (lambda (x)
+    (+ (* x x x) (* a (* x x)) (* b x) c)))
+
+;; ex1.41
+(define (inc i) (+ i 1))
+
+(define (double f)
+  (lambda (x) (f (f x))))
+;; (((double (double double)) inc) 5) => 21
+
+;; ex1.42
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;; ex1.43
+(define (repeated f n)
+  (if (= n 1)
+      f
+      (repeated (compose f f) (- n 1))))
+
+;; ex1.44
+;; ex1.45
+
+;; ex1.46
+
+;; from 1.1.7:
+;; (define (sqrt-iter guess x)
+;;   (if (good-enough? guess x)
+;;       guess
+;;       (sqrt-iter (improve guess x)
+;;                  x)))
+
+(define (iterative-improve good-enough? improve)
+  (lambda (guess x)
+    (define (helper guess x)
+      (if (good-enough? guess x)
+          guess
+          (helper (improve guess x) x)))
+    (helper guess x)))
+
+
+(define (sqrt-iter guess x)
+  ((iterative-improve (lambda (guess x) (< (abs (- (square guess) x)) 0.001))
+                      (lambda (guess x) (average guess (/ x guess)))) guess x))
+
+;; (define (fixed-point f first-guess)
+;;   (define (close-enough? v1 v2)
+;;     (< (abs (- v1 v2)) tolerance))
+;;   (define (try guess)
+;;     (let ((next (f guess)))
+;;       (if (close-enough? guess next)
+;;           next
+;;           (try next))))
+;;   (try first-guess))
+
+(define (fxd-point f first-guess)
+  ((imperative-improve (lambda ()))))
