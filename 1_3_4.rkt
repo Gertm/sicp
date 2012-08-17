@@ -109,9 +109,11 @@
       f
       (repeated (compose f f) (- n 1))))
 
+;; these two are more of the same, I'm skipping these.
 ;; ex1.44
 ;; ex1.45
 
+;; this one is interesting.
 ;; ex1.46
 
 ;; from 1.1.7:
@@ -121,7 +123,7 @@
 ;;       (sqrt-iter (improve guess x)
 ;;                  x)))
 
-(define (iterative-improve good-enough? improve)
+(define (imperative-improve good-enough? improve)
   (lambda (guess x)
     (define (helper guess x)
       (if (good-enough? guess x)
@@ -131,7 +133,7 @@
 
 
 (define (sqrt-iter guess x)
-  ((iterative-improve (lambda (guess x) (< (abs (- (square guess) x)) 0.001))
+  ((imperative-improve (lambda (guess x) (< (abs (- (square guess) x)) 0.001))
                       (lambda (guess x) (average guess (/ x guess)))) guess x))
 
 ;; (define (fixed-point f first-guess)
@@ -144,5 +146,6 @@
 ;;           (try next))))
 ;;   (try first-guess))
 
+;; so this basicly says: is the fixed point close enough?
 (define (fxd-point f first-guess)
-  ((imperative-improve (lambda ()))))
+  ((imperative-improve f close-enough?) first-guess))
