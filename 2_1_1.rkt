@@ -3,7 +3,8 @@
 (provide (all-defined-out))
 
 (define (make-rat n d)
-  (cons n d))
+  (let ((g (gcd n d)))
+    (cons (/ n g) (/ d g))))
 
 (define (numer x) (car x))
 
@@ -28,7 +29,22 @@
      (* (numer y) (denom x))))
 
 (define (print-rat x)
-  (newline)
   (display (numer x))
   (display "/")
-  (display (denom x)))
+  (display (denom x))
+  (newline))
+
+(define one-half (make-rat 1 2))
+(define one-third (make-rat 1 3))
+
+;; Exercise 2.1.  Define a better version of make-rat that handles both
+;; positive and negative arguments. Make-rat should normalize the sign
+;; so that if the rational number is positive, both the numerator and
+;; denominator are positive, and if the rational number is negative,
+;; only the numerator is negative.
+
+(define (better-make-rat n d)
+  )
+
+
+
