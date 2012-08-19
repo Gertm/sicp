@@ -43,8 +43,11 @@
 ;; denominator are positive, and if the rational number is negative,
 ;; only the numerator is negative.
 
+;; found an elaborate solution first, then I checked it and this is
+;; actually quite a bit better.
 (define (better-make-rat n d)
-  )
+  (let ((g ((if (< d 0) - +) (gcd n d))))
+    (cons (/ n g) (/ d g))))
 
 
 
