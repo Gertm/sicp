@@ -52,3 +52,9 @@
 ;; (Hint: Use substitution to evaluate (add-1 zero)). Give a direct definition of the
 ;; addition procedure + (not in terms of repeated application of add-1).
 
+(define one
+  (lambda (f) (lambda (x) (f (f x)))))
+
+(define two
+  (lambda (f) (lambda (x) (f ((lambda (y) (f (f y))) f) x))))
+
