@@ -44,15 +44,15 @@
 ;; arguments, as usual, but the final parameter's value will be a list of any
 ;; remaining arguments. For instance, given the definition
 
-(define (f x y . z) <body>)
+;; (define (f x y . z) <body>)
 
 ;; the procedure f can be called with two or more arguments. If we evaluate
 
-(f 1 2 3 4 5 6)
+;; (f 1 2 3 4 5 6)
 
 ;; then in the body of f, x will be 1, y will be 2, and z will be the list (3 4 5 6). Given the definition
 
-(define (g . w) <body>)
+;;(define (g . w) <body>)
 
 ;; the procedure g can be called with zero or more arguments. If we evaluate
 
@@ -64,7 +64,16 @@
 ;; integers and returns a list of all the arguments that have the same even-odd
 ;; parity as the first argument. For example,
 
-(define (same-parity ))
+(define (same-parity . x)
+  (define (get-parity x)
+    (if (even? x) even? (lambda (x) (not (even? x)))))
+  (define (get-same lst fn result)
+    (if (null? lst)
+        result
+        (if (fn (car lst))
+            (get-same (cdr lst) fn (cons (car lst) result))
+            (get-same (cdr lst) fn result))))
+  (reverse (get-same x (get-parity (car x)) '())))
 
 (same-parity 1 2 3 4 5 6 7)
 
