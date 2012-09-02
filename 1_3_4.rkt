@@ -109,6 +109,13 @@
       f
       (repeated (compose f f) (- n 1))))
 
+(define (brepeated f n)
+  (define (helper f n result)
+    (if (= n 0)
+        result
+        (helper f (- n 1) (compose f result))))
+  (helper f n (lambda (x) x)))
+
 ;; these two are more of the same, I'm skipping these.
 ;; ex1.44
 ;; ex1.45
