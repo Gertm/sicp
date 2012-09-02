@@ -152,7 +152,8 @@
 ;; 321
 ;; 88
 
-;; The value returned by the call to for-each (not illustrated above) can be something arbitrary, such as true. Give an implementation of for-each.
+;; The value returned by the call to for-each (not illustrated above) can be
+;; something arbitrary, such as true. Give an implementation of for-each.
 
 (define (for-each fn lst)
   (define (helper fn lst result)
