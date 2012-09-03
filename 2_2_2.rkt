@@ -1,6 +1,7 @@
 #lang racket
 
 (provide (all-defined-out))
+(require racket/trace)
 
 (define (count-leaves x)
   (cond ((null? x) 0)  
@@ -66,4 +67,38 @@
                        (list (deep-reverse (car items))))))) 
 ;; this uses append.. might not be the most optimal way of doing this.
 ;; but it works. Not sure we already saw 'append' at this stage though.
+
+
+
+;; Exercise 2.28.  Write a procedure fringe that takes as argument a tree
+;; (represented as a list) and returns a list whose elements are all the
+;; leaves of the tree arranged in left-to-right order. For example,
+
+(define e228 (list (list 1 2) (list 3 4)))
+
+(define (atom? a) (not (pair? a)))
+
+(define (first-attempt-fringe x)
+  (define (iter x result)
+    (cond ((null? x) result)
+          ((atom? x) (list x))
+          ((null? (car x)) (iter (cdr x) result))
+          ((atom? (car x)) (iter (cdr x) (cons (car x) result)))
+          ((pair? (car x)) (iter (cons (fringe (car x)) (fringe (cdr x))) result))))
+  (iter x '()))
+;; ok, this is WAAAY too complicated.
+
+;; again with append this time.
+(define (fringe x) 
+   (cond ((null? x) '())            ;; These are the only two base cases,
+         ((not (pair? x)) (list x)) ;; the empty list and the atom.
+         (else (append (fringe (car x)) (fringe (cdr x))))))  ;; drill down to the base cases.
+
+;;(fringe e228)
+;; (1 2 3 4)
+
+;; (fringe (list e228 228))
+
+;; (1 2 3 4 1 2 3 4)
+
 
