@@ -57,4 +57,7 @@
 ;; barriers, so that the same perimeter and area procedures will work using
 ;; either representation?
 
+;; Make sure you have nice accessor functions on both representations,
+;; the actual perimeter calculation will use those accessor functions.
+;; Not typing the entire thing, confident that I get it, moving on.
 
