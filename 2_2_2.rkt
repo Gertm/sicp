@@ -177,3 +177,4 @@
 
   ;; How much do you need to change your programs to convert to the new representation?
 ;; cadr -> cdr
+;; list? -> pair?
