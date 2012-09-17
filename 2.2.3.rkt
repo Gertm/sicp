@@ -42,13 +42,17 @@
   (accumulate (lambda (x y) (+ y 1)) 0 sequence))
 
 
-;; Exercise 2.34.  Evaluating a polynomial in x at a given value of x can be formulated as an accumulation. We evaluate the polynomial
+;; Exercise 2.34.  Evaluating a polynomial in x at a given value of x
+;; can be formulated as an accumulation. We evaluate the polynomial
 
-;; using a well-known algorithm called Horner's rule, which structures the computation as
+;; using a well-known algorithm called Horner's rule, which structures
+;; the computation as
 
-;; In other words, we start with an, multiply by x, add an-1, multiply by x, and so on, until we reach a0
-;; Fill in the following template to produce a procedure that evaluates a polynomial using Horner's rule.
-;; Assume that the coefficients of the polynomial are arranged in a sequence, from a0 through an.
+;; In other words, we start with an, multiply by x, add an-1, multiply
+;; by x, and so on, until we reach a0 Fill in the following template
+;; to produce a procedure that evaluates a polynomial using Horner's
+;; rule.  Assume that the coefficients of the polynomial are arranged
+;; in a sequence, from a0 through an.
 
 
 ;; (define (horner-eval x coefficient-sequence)
@@ -82,3 +86,32 @@
   (accumulate + 0 (map (lambda (x)
                          (if (pair? x) (count-leaves2 x)
                              1)) t)))
+
+;; Exercise 2.36.  The procedure accumulate-n is similar to accumulate
+;; except that it takes as its third argument a sequence of sequences,
+;; which are all assumed to have the same number of elements. It
+;; applies the designated accumulation procedure to combine all the
+;; first elements of the sequences, all the second elements of the
+;; sequences, and so on, and returns a sequence of the results. For
+;; instance, if s is a sequence containing four sequences, ((1 2 3) (4
+;; 5 6) (7 8 9) (10 11 12)), then the value of (accumulate-n + 0 s)
+;; should be the sequence (22 26 30). Fill in the missing expressions
+;; in the following definition of accumulate-n:
+
+;; (define (accumulate-n op init seqs)
+;;   (if (null? (car seqs))
+;;       nil
+;;       (cons (accumulate op init <??>)
+;;             (accumulate-n op init <??>))))
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      '()
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+;; Had to cheat and go look at the solution.
+;; Let's try to figure out why this works.
+;; AHA, at the last one, the lists are (() () ()), So (car seqs) results in '() => return '()
+;; and this works nicely then.
+;; Mapping over them lets you build the resulting list easily.
+
