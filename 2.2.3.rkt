@@ -1,9 +1,11 @@
-#lang racket
+#lang typed/racket
 
 (provide (all-defined-out))
 
+(: square (Integer -> Integer))
 (define (square x) (* x x))
 
+(: sum-odd-squares ((Listof Integer) -> Integer))
 (define (sum-odd-squares tree)
   (cond ((null? tree) 0)  
         ((not (pair? tree))
@@ -18,12 +20,14 @@
                (filter predicate (cdr sequence))))
         (else (filter predicate (cdr sequence)))))
 
+
 (define (accumulate op initial sequence)
   (if (null? sequence)
       initial
       (op (car sequence)
           (accumulate op initial (cdr sequence)))))
 
+(: enumerate-interval (Integer Integer -> (Listof Integer)))
 (define (enumerate-interval low high)
   (if (> low high)
       '()
