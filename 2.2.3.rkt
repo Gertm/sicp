@@ -2,10 +2,8 @@
 
 (provide (all-defined-out))
 
-(: square (Integer -> Integer))
 (define (square x) (* x x))
 
-(: sum-odd-squares ((Listof Integer) -> Integer))
 (define (sum-odd-squares tree)
   (cond ((null? tree) 0)  
         ((not (pair? tree))
@@ -27,7 +25,6 @@
       (op (car sequence)
           (accumulate op initial (cdr sequence)))))
 
-(: enumerate-interval (Integer Integer -> (Listof Integer)))
 (define (enumerate-interval low high)
   (if (> low high)
       '()
@@ -119,3 +116,68 @@
 ;; and this works nicely then.
 ;; Mapping over them lets you build the resulting list easily.
 
+;; Exercise 2.37.  Suppose we represent vectors v = (vi) as sequences
+;; of numbers, and matrices m = (mij) as sequences of vectors (the
+;; rows of the matrix). For example, the matrix
+;; is represented as the sequence ((1 2 3 4) (4 5 6 6) (6 7 8
+;; 9)). With this representation, we can use sequence operations to
+;; concisely express the basic matrix and vector operations. These
+;; operations (which are described in any book on matrix algebra) are
+;; the following:
+
+;; We can define the dot product as17
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+;; Fill in the missing expressions in the following procedures for
+;; computing the other matrix operations. (The procedure accumulate-n
+;; is defined in exercise 2.36.)
+
+;; (define (matrix-*-vector m v)
+;;   (map <??> m))
+;; (define (transpose mat)
+;;   (accumulate-n <??> <??> mat))
+;; (define (matrix-*-matrix m n)
+;;   (let ((cols (transpose n)))
+;;     (map <??> m)))
+
+
+;; Exercise 2.38.  The accumulate procedure is also known as
+;; fold-right, because it combines the first element of the sequence
+;; with the result of combining all the elements to the right. There
+;; is also a fold-left, which is similar to fold-right, except that it
+;; combines elements working in the opposite direction:
+
+(define (fold-left op initial sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result
+        (iter (op result (car rest))
+              (cdr rest))))
+  (iter initial sequence))
+
+;; What are the values of
+(define fold-right accumulate)
+
+(fold-right / 1 (list 1 2 3))
+(fold-left / 1 (list 1 2 3))
+(fold-right list '() (list 1 2 3))
+(fold-left list '() (list 1 2 3))
+
+;; Give a property that op should satisfy to guarantee that fold-right
+;; and fold-left will produce the same values for any sequence.
+(fold-right + 0 '(1 2 3 4))
+(fold-left + 0 '(1 2 3 4))
+
+;; -> the operation has to be commutative
+;; --> apparently, having the operation be associative works too.
+
+;; Exercise 2.39.  Complete the following definitions of reverse
+;; (exercise 2.18) in terms of fold-right and fold-left from exercise
+;; 2.38:
+
+;; (define (reverse sequence)
+;;   (fold-right (lambda (x y) <??>) nil sequence))
+;; (define (reverse sequence)
+;;   (fold-left (lambda (x y) <??>) nil sequence))
