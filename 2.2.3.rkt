@@ -4,6 +4,8 @@
 
 (define (square x) (* x x))
 
+(define nil '())
+
 (define (sum-odd-squares tree)
   (cond ((null? tree) 0)  
         ((not (pair? tree))
@@ -187,3 +189,7 @@
 
 (define (reversel sequence)
   (fold-left (lambda (x y) (cons y x)) '() sequence))
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
