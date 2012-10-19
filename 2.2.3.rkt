@@ -226,3 +226,34 @@
                        (enumerate-interval 1 (- i 1))))
                 (enumerate-interval 1 n)))))
 
+(define (permutations s)
+  (if (null? s)                    ; empty set?
+      (list nil)                   ; sequence containing empty set
+      (flatmap (lambda (x)
+                 (map (lambda (p) (cons x p))
+                      (permutations (remove x s))))
+               s)))
+
+(define (remove item sequence)
+  (filter (lambda (x) (not (= x item)))
+          sequence))
+
+;; before:
+;; (accumulate append
+;;             nil
+;;             (map (lambda (i)
+;;                    (map (lambda (j) (list i j))
+;;                         (enumerate-interval 1 (- i 1))))
+;;                  (enumerate-interval 1 n)))
+
+;; which could be written as:
+(define (ord-pair-distinct-pos n)
+  (flatmap (lambda (i) (map (lambda (j) (list i j))
+                            (enumerate-interval 1 (- i 1))))
+           (enumerate-interval 1 n)))
+
+;; Exercise 2.40.  Define a procedure unique-pairs that, given an
+;; integer n, generates the sequence of pairs (i,j) with 1< j< i<
+;; n. Use unique-pairs to simplify the definition of prime-sum-pairs
+;; given above.
+
