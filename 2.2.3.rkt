@@ -257,3 +257,10 @@
 ;; n. Use unique-pairs to simplify the definition of prime-sum-pairs
 ;; given above.
 
+(define (unique-pairs n)
+  (flatmap (lambda (i) (map (lambda (j) (list j i)) (enumerate-interval 1 (- i 1))))
+           (enumerate-interval 1 n)))
+
+(define (prime-sum-pairs2 n)
+  (map make-pair-sum (filter prime-sum? (unique-pairs n))))
+
