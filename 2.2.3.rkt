@@ -258,9 +258,57 @@
 ;; given above.
 
 (define (unique-pairs n)
-  (flatmap (lambda (i) (map (lambda (j) (list j i)) (enumerate-interval 1 (- i 1))))
-           (enumerate-interval 1 n)))
+  (flatmap (lambda (i)
+             (map (lambda (j) (list i j)) (enumerate-interval 1 (- i 1))))
+           (enumerate-interval 1 (- n 1))))
 
 (define (prime-sum-pairs2 n)
   (map make-pair-sum (filter prime-sum? (unique-pairs n))))
+
+;; Exercise 2.41.  Write a procedure to find all ordered triples of
+;; distinct positive integers i, j, and k less than or equal to a
+;; given integer n that sum to a given integer s.
+;; looking at a solution I found online and trying to grasp it.
+
+(define (ordered-triples-sum n s) 
+   (filter (lambda (list) (= (accumulate + 0 list) s)) ;; filters the list.
+          (flatmap                           ;; 2 consecutive flatmaps
+           (lambda (i) 
+             (flatmap (lambda (j) 
+                  (map (lambda (k) (list i j k)) 
+                       (enumerate-interval 1 (- j 1)))) 
+                  (enumerate-interval 1 (- i 1)))) 
+             (enumerate-interval 1 n)))) 
+
+
+  ;; ;; Exercise 2.42
+  ;; (define (queens board-size)
+  ;;   (define (queen-cols k)  
+  ;;     (if (= k 0)
+  ;;         (list empty-board)
+  ;;         (filter
+  ;;          (lambda (positions) (safe? k positions))
+  ;;          (flatmap
+  ;;           (lambda (rest-of-queens)
+  ;;             (map (lambda (new-row)
+  ;;                    (adjoin-position new-row k rest-of-queens))
+  ;;                  (enumerate-interval 1 board-size)))
+  ;;           (queen-cols (- k 1))))))
+  ;;   (queen-cols board-size))
+
+  ;; In this procedure rest-of-queens is a way to place k - 1 queens in
+  ;; the first k - 1 columns, and new-row is a proposed row in which to
+  ;; place the queen for the kth column. Complete the program by
+  ;; implementing the representation for sets of board positions,
+  ;; including the procedure adjoin-position, which adjoins a new
+  ;; row-column position to a set of positions, and empty-board, which
+  ;; represents an empty set of positions. You must also write the
+  ;; procedure safe?, which determines for a set of positions, whether
+  ;; the queen in the kth column is safe with respect to the
+  ;; others. (Note that we need only check whether the new queen is
+  ;; safe -- the other queens are already guaranteed safe with respect
+  ;; to each other.)
+
+
+
 
